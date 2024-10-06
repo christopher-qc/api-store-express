@@ -1,0 +1,6 @@
+module.exports = {
+    'config': './api/db/config.js',              // Ruta al archivo de configuración de la base de datos
+    'models-path': './api/db/models',             // Ruta donde se encuentran los modelos
+    'migrations-path': './api/db/migrations/',    // Ruta donde se encuentran los archivos de migración
+    'seeders-path': './api/db/seeders/'           // Ruta donde se encuentran los seeders
+}
