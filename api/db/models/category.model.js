@@ -1,6 +1,6 @@
-const { Model, DataTypes, Sequelize } = require('sequelize')
+const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const CATEGORY_TABLE = 'categories'
+const CATEGORY_TABLE = 'categories';
 
 const CategoriesSchema = {
     id: {
@@ -33,30 +33,33 @@ const CategoriesSchema = {
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        field: 'create_at', // El nombre de la columna en la base de datos
+        field: 'created_at', // El nombre de la columna en la base de datos
         defaultValue: Sequelize.NOW,
     },
     updatedAt: {
         allowNull: false,
         type: DataTypes.DATE,
-        field: 'update_at', // Nombre de la columna para actualizaciones
+        field: 'updated_at', // Nombre de la columna para actualizaciones
         defaultValue: Sequelize.NOW,
-    },    
-}
+    },
+};
 
 class Category extends Model {
-    static associate() {
-
+    static associate(models) {
+        this.hasMany(models.Product, {
+            as: 'products',
+            foreignKey: 'categoryId'
+        })
     }
 
     static config(sequelize) {
         return {
             sequelize,
-            tableNmae: CATEGORY_TABLE,
+            tableName: CATEGORY_TABLE,
             modelName: 'Category',
             timestamps: true,
-        }
+        };
     }
 }
 
-module.exports = { CATEGORY_TABLE, CategoriesSchema, Category }
+module.exports = { CATEGORY_TABLE, CategoriesSchema, Category };

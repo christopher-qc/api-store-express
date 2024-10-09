@@ -20,8 +20,9 @@ class CategoriesService {
     }
 
     async find() {
-        console.log(models.Category)
-        const rta = await models.Category.findAll();
+        const rta = await models.Category.findAll({
+            include: ['products']
+        });
         return rta
 
     }

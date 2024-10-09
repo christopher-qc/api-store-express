@@ -3,7 +3,7 @@ const router = express.Router()
 
 const CategoriesService = require('../services/category.service')
 const validatorHandler = require('../middlewares/validator.handler')
-const { getCategoriesSchema } = require('../schemas/category.schema')
+const { getCategoriesSchema, createCategoriesSchema, updateCategoriesSchema } = require('../schemas/category.schema')
 
 const service = new CategoriesService();
 
@@ -24,5 +24,32 @@ router.get('/:id',
     }
   }
 );
+
+router.post('/',
+  validatorHandler(createCategoriesSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const products = await service.created(body);
+      res.status(201).json(products)
+    } catch (err) {
+      next(err)
+    }
+  }
+)
+
+router.patch('/:id',
+  validatorHandler(getCategoriesSchema, 'params'),
+  validatorHandler(updateCategoriesSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const body = req.body;
+      const user = await service.update(id, body);
+      res.json(user)
+    } catch (err) {
+      next(err)
+    }
+  })
 
 module.exports = router
