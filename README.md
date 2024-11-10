@@ -14,3 +14,9 @@ npm run migrations:revert
 
 ## Para Deshacer todas las migraciones
 npm run migrations:delete
+```
+
+# Levantar MySql y phpMyAdmin con Docker
+
+sudo docker-compose up -d mysql
+sudo docker-compose up -d phpmyadmin

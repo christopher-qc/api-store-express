@@ -14,9 +14,16 @@ const updateOrderSchema = Joi.object({
     status: Joi.string()
 });
 
+const addItemSchema = Joi.object({
+	orderId: Joi.number().integer().required(),
+	productId: Joi.number().integer().required(),
+	amount: Joi.number().integer().min(1).required(),
+});
+
 module.exports = {
 	getOrderSchema,
 	createOrderSchema,
-    updateOrderSchema
+    updateOrderSchema,
+	addItemSchema
 }
 

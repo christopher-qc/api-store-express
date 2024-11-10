@@ -3,7 +3,7 @@ const router = express.Router();
 
 const OrderService = require('../services/order.service');
 const validatorHandler = require('../middlewares/validator.handler');
-const { getOrderSchema, createOrderSchema, updateOrderSchema } = require('../schemas/order.schema');
+const { getOrderSchema, createOrderSchema, updateOrderSchema, addItemSchema } = require('../schemas/order.schema');
 
 const service = new OrderService();
 
@@ -38,6 +38,20 @@ router.post('/',
 			const body = req.body;
 			const newOrder = await service.created(body);
 			res.status(201).json({ newOrder });
+		} catch (error) {
+            console.log(error)
+			next(error);
+		}
+	}
+);
+
+router.post('/add-item',
+	validatorHandler(addItemSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const body = req.body;
+			const newItem = await service.addItem(body);
+			res.status(201).json({ newItem });
 		} catch (error) {
             console.log(error)
 			next(error);

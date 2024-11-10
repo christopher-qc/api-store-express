@@ -1,5 +1,5 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
-const { USER_TABLE } = require('./user.model')
+const { USER_TABLE } = require('./user.model');
 
 const ORDER_TABLE = 'orders';
 
@@ -32,12 +32,32 @@ const OrdersSchema = {
         field: 'created_at',
         defaultValue: Sequelize.NOW,
     },
+    total: {
+        type: DataTypes.VIRTUAL,
+        get() {
+            if (this.items && this.items.length > 0) {
+                return this.items.reduce((total, item) => {
+                    if (!item.OrderProduct) {
+                        throw new Error(`OrderProduct is missing for item with ID ${item.id}`);
+                    }
+                    return total + (item.price * item.OrderProduct.amount);
+                }, 0);
+            }
+            return 0;
+        }
+    }    
 };
 
 class Order extends Model {
     static associate(models) {
         this.belongsTo(models.User, {
             as: 'user',
+        })
+        this.belongsToMany(models.Product, {
+            as: 'items',
+            through: models.OrderProduct,
+            foreignKey: 'orderId',
+            otherKey: 'productId'
         })
     }
 
